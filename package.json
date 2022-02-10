@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "local": "cross-env NODE_ENV=local nodemon server",
+    "dev": "cross-env NODE_ENV=dev nodemon server",
     "start": "nodemon server",
     "test": "cross-env NODE_ENV=test jest --watch"
   },
