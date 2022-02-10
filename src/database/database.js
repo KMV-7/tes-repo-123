@@ -83,15 +83,16 @@ const assessmentSchema = new mongoose.Schema({
 
 //Customer
 const customerSchema = new mongoose.Schema({   
-    name: {type: String, required: true},
+    
+    /*name: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
     active: {type: Boolean, required: true},
     role: {type: String, required: true},
     size: {type: Number, required: true},
     vertical: {type: String, required: true},
-    tags: [{type: Array, required: true}],
-});
+    tags: [{type: Array, required: true}],*/
+},{ strict: false });
 
 const customerModel = mongoose.model('Customer', customerSchema);
 
