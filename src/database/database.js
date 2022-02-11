@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const config = require('config');
 
+//TODO:
 ///Add ASSET and decide how to use it => https://docs.google.com/document/d/12jqSfcEEz5iwIZA69uJMNIjmkdnFe-vEDsf5uMVA_1o/edit
+//db commands to add admin users if they don't exist already
+///decalre indexes for frequently used fields
 
 const connectionString = config.get('mongo.url');
 
-///decalre indexes for frequently used fields
 
-mongoose.connect(connectionString, () => {
+mongoose.connect(connectionString,() => {
     console.log('connected to mongo!')
-    //db commands to add admin users if they don't exist already
 }, () => {
     console.log(`There was an ERROR connecting to mongo`)
 });
@@ -17,14 +18,14 @@ mongoose.connect(connectionString, () => {
 //Mitigation
 const mitigationSchema = new mongoose.Schema({
     mitigation: {
-        task: {type: String, required: true},
-        status: {type: String, required: true},
-        cct: {type: String, required: true},
-        priority: {type: String, required: true}
+        task: {type: String},
+        status: {type: String},
+        cct: {type: String},
+        priority: {type: String}
     }
-});
+}, {strict : false});
 
-//const mitigationModel = mongoose.model('Mitigation', mitigationSchema)
+const mitigationModel = mongoose.model('Mitigation', mitigationSchema)
 
 //Pentest
 const pentestSchema = new mongoose.Schema({
@@ -43,11 +44,9 @@ const pentestSchema = new mongoose.Schema({
         mitigation: [mitigationSchema],
     }
     
-    //basically admin should be able to create projects with empty values because the assesment and pentest results wont 
-    //be available at that moment
-});
+}, {strict : false});
 
-//const pentestModel = mongoose.model('PenTest', pentestSchema)
+const pentestModel = mongoose.model('PenTest', pentestSchema)
 
 
 //Assasment
@@ -73,56 +72,67 @@ const assessmentSchema = new mongoose.Schema({
             mitigation: [mitigationSchema]
         }
     }
-    //basically admin should be able to create projects with empty values because the assesment and pentest results wont 
-    //be available at that moment
     
-});
+}, {strict : false});
 
-//const assessmentModel = mongoose.model('Assessment', assessmentSchema)
+const assessmentModel = mongoose.model('Assessment', assessmentSchema)
+
+
+//Asset
+const assetSchema = new mongoose.Schema({   
+    name: {type: String},
+    type: {type: String},
+    relatedAssets: {type: Array},
+    tags: {type: Array},
+    projectTitle: {type: String}, ///FK
+    pentestInfo: pentestSchema,
+    assessmentInfo: assessmentSchema
+}, {strict : false});
+
+const assetModel = mongoose.model('Asset', assetSchema);
 
 
 //Customer
 const customerSchema = new mongoose.Schema({   
-    name: {type: String, required: true},
-    email: {type: String, required: true},
-    password: {type: String, required: true},
-    active: {type: Boolean, required: true},
-    role: {type: String, required: true},
-    size: {type: Number, required: true},
-    vertical: {type: String, required: true},
-    tags: [{type: Array, required: true}],
-});
+    name: {type: String},
+    email: {type: String},
+    password: {type: String},
+    active: {type: Boolean},
+    role: {type: String},
+    size: {type: Number},
+    vertical: {type: String},
+    tags: [{type: Array}],
+}, {strict : false});
 
 const customerModel = mongoose.model('Customer', customerSchema);
 
 
 ///Project
 const projectSchema = new mongoose.Schema({
-    title: {type: String, required: true},
-    leadConsultant: {type: String, required: true},
-    scope: {type: String, required: true},
-    startDate: {type: String, required: true},
-    endDate: {type: String, required: true},
+    title: {type: String},
+    leadConsultant: {type: String},
+    scope: {type: String},
+    startDate: {type: String},
+    endDate: {type: String},
     specialRequirements: [{type: String}],
-    executiveSummary: {type: String, required: true},
-    customerName: {type: String, required: true},
-    pentestInfo: pentestSchema,
-    assessmentInfo: assessmentSchema
+    executiveSummary: {type: String},
+    customerName: {type: String}, ///FK
+    assets: [assetSchema],
 
     //you can have both or neither or only one or none
     
-});
+}, {strict : false});
 
 const projectModel = mongoose.model('Project', projectSchema);
 
 //Admin
 const adminSchema = new mongoose.Schema({   
-    name: {type: String, required: true},
-    email: {type: Number, required: true},
-    password: {type: String, required: true},
-    active: {type: Boolean, required: true},
-    role: {type: String, required: true}
-});
+    name: {type: String},
+    email: {type: Number},
+    password: {type: String},
+    active: {type: Boolean},
+    role: {type: String}
+}, {strict : false});
 
 const adminModel = mongoose.model('Admin', customerSchema)
 

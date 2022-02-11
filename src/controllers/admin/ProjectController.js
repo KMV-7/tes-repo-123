@@ -6,7 +6,7 @@ const {projectModel} = require('../admin/../../database/database');
 
 postProject = async (req, res) => {
  
-    let {title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary, customerName} = req.body;
+    let {title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary, customerName, assets} = req.body;
     const newProject = new projectModel({
       title: title,
       leadConsultant: leadConsultant,
@@ -16,7 +16,8 @@ postProject = async (req, res) => {
       specialRequirements: specialRequirements,
       executiveSummary: executiveSummary,
       customerName: customerName,
-      pentestInfo:{findings: req.body.pentestInfo.findings}
+      assets: assets
+      //pentestInfo:{findings: req.body.pentestInfo.findings}
   
     });
     if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
@@ -26,6 +27,20 @@ postProject = async (req, res) => {
 };
 
 updateProject = async (req, res) => {
+
+  let {projectTitle, projectAttribute} = req.params;
+
+  if (projectAttribute){
+    const projectQueryRes = await projectModel.findOne({title: projectTitle});
+    console.log(req.query.name)
+    for (const i in projectQueryRes.assets){
+      if (projectQueryRes.assets[i].name === req.query.name && req.body.pentestInfo){
+        const fieldToUpdate = projectQueryRes.assets[i].pentestInfo;
+        const update = req.body.pentestInfo;
+        projectModel.updateOne({fieldToUpdate: update})
+      }
+  }
+    }
 
 
   };
