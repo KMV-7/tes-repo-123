@@ -6,7 +6,7 @@ const {projectModel} = require('../admin/../../database/database');
 
 postProject = async (req, res) => {
  
-    let {title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary, customerName} = req.body;
+    let {title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary, customerName, assets} = req.body;
     const newProject = new projectModel({
       title: title,
       leadConsultant: leadConsultant,
@@ -16,7 +16,8 @@ postProject = async (req, res) => {
       specialRequirements: specialRequirements,
       executiveSummary: executiveSummary,
       customerName: customerName,
-      pentestInfo:{findings: req.body.pentestInfo.findings}
+      assets: assets
+      //pentestInfo:{findings: req.body.pentestInfo.findings}
   
     });
     if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
@@ -27,8 +28,25 @@ postProject = async (req, res) => {
 
 updateProject = async (req, res) => {
 
+  const {projectTitle, projectAttribute} = req.params;
 
-  };
+  if (projectAttribute){
+    const projectQueryRes = await projectModel.findOne({title: projectTitle});
+    for (const i in projectQueryRes.assets){
+      if (projectQueryRes.assets[i].name === req.query.name && req.body.pentestInfo){
+        const fieldToUpdate = projectQueryRes.assets[i].pentestInfo.findings;
+        const findingsFromReq = req.body.pentestInfo.findings;
+        findingsFromReq.forEach(element => {
+          fieldToUpdate.push(element)
+        });
+        await projectModel.updateOne(projectQueryRes)
+        res.send(projectQueryRes)
+      }
+    }
+  }
+
+
+};
 
 
 deleteProject = async (req, res) => {
@@ -41,9 +59,27 @@ deleteProject = async (req, res) => {
 
 getProject = async (req, res) => {
 
-  res.send({message: "Hello from get project API"})
+  const {projectTitle, projectAttribute} = req.params;
+  const projectQueryRes = await projectModel.findOne({title: projectTitle});
+  const findingsToShow = req.query.name;
+  if (!projectAttribute){
+   res.send(projectQueryRes);
+  }
+
+  if (findingsToShow === 'all'){
+    const returnAllFindings = projectQueryRes.assets.pentestInfo;
+    let findingsToReturn = [];
+    for (const i in projectQueryRes.assets){
+      const findingsFromDB = projectQueryRes.assets[i].pentestInfo.findings;
+      findingsFromDB.forEach(element => {
+        findingsToReturn.push(element)
+      });
+      
+    }
+    res.send(findingsToReturn)
+  }
    
-  };
+};
 
 getAllProjects = async (req, res) => {
 
