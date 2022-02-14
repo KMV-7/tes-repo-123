@@ -28,22 +28,25 @@ postProject = async (req, res) => {
 
 updateProject = async (req, res) => {
 
-  let {projectTitle, projectAttribute} = req.params;
+  const {projectTitle, projectAttribute} = req.params;
 
   if (projectAttribute){
     const projectQueryRes = await projectModel.findOne({title: projectTitle});
-    console.log(req.query.name)
     for (const i in projectQueryRes.assets){
       if (projectQueryRes.assets[i].name === req.query.name && req.body.pentestInfo){
-        const fieldToUpdate = projectQueryRes.assets[i].pentestInfo;
-        const update = req.body.pentestInfo;
-        projectModel.updateOne({fieldToUpdate: update})
+        const fieldToUpdate = projectQueryRes.assets[i].pentestInfo.findings;
+        const findingsFromReq = req.body.pentestInfo.findings;
+        findingsFromReq.forEach(element => {
+          fieldToUpdate.push(element)
+        });
+        await projectModel.updateOne(projectQueryRes)
+        res.send(projectQueryRes)
       }
-  }
     }
+  }
 
 
-  };
+};
 
 
 deleteProject = async (req, res) => {
@@ -56,9 +59,27 @@ deleteProject = async (req, res) => {
 
 getProject = async (req, res) => {
 
-  res.send({message: "Hello from get project API"})
+  const {projectTitle, projectAttribute} = req.params;
+  const projectQueryRes = await projectModel.findOne({title: projectTitle});
+  const findingsToShow = req.query.name;
+  if (!projectAttribute){
+   res.send(projectQueryRes);
+  }
+
+  if (findingsToShow === 'all'){
+    const returnAllFindings = projectQueryRes.assets.pentestInfo;
+    let findingsToReturn = [];
+    for (const i in projectQueryRes.assets){
+      const findingsFromDB = projectQueryRes.assets[i].pentestInfo.findings;
+      findingsFromDB.forEach(element => {
+        findingsToReturn.push(element)
+      });
+      
+    }
+    res.send(findingsToReturn)
+  }
    
-  };
+};
 
 getAllProjects = async (req, res) => {
 

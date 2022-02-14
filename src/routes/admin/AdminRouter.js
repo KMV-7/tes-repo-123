@@ -4,15 +4,15 @@ const CustomerAdminAPI = require('../../controllers/admin/CustomerController');
 const ProjectAdminAPI = require('../../controllers/admin/ProjectController');
 
 //Customers
-getAllCustomersRequest = router.get(`/api/1.0/admin/get/customers/all`, CustomerAdminAPI.getAllCustomers);
-postCustomerRequest = router.post(`/api/1.0/admin/post/customers/new`, CustomerAdminAPI.postCustomer);
+getAllCustomersRequest = router.get(`/admin/customers/all`, CustomerAdminAPI.getAllCustomers);
+postCustomerRequest = router.post(`/admin/customers/new`, CustomerAdminAPI.postCustomer);
 
 
 //Projects
-getProjectRequest = router.get(`/api/1.0/admin/get/project`, ProjectAdminAPI.getProject);
-getAllProjectsRequest = router.get(`/api/1.0/admin/get/projects/all`, ProjectAdminAPI.getAllProjects);
-postProjectRequest = router.post(`/api/1.0/admin/post/projects/new`, ProjectAdminAPI.postProject);
-updateProjectRequest = router.patch(`/api/1.0/admin/patch/projects/:projectTitle/:projectAttribute?`, ProjectAdminAPI.updateProject);
+getProjectRequest = router.get(`/admin/projects/:projectTitle/:projectAttribute?/:projectAttributeName?/:findings?`, ProjectAdminAPI.getProject);
+getAllProjectsRequest = router.get(`/admin/projects/all`, ProjectAdminAPI.getAllProjects);
+postProjectRequest = router.post(`/admin/projects/new`, ProjectAdminAPI.postProject);
+updateProjectRequest = router.patch(`/admin/projects/:projectTitle/:projectAttribute?`, ProjectAdminAPI.updateProject);
 
 
 module.exports = router;
