@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const {projectModel} = require('../admin/../../database/database');
+const projectModel = require('../admin/../../database/schemas/project');
+const customerModel = require('../admin/../../database/schemas/customer');
+
 //add check
 //add validationError
 
-postProject = async (req, res) => {
+createProject = async (req, res) => {
  
-    let {title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary, customerName, assets} = req.body;
+    const { title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary } = req.body;
+    let customerName = req.params;
+    customer = await customerModel.findOne({'name': 'bankofus'})
+    console.log(customer.name)
     const newProject = new projectModel({
       title: title,
       leadConsultant: leadConsultant,
@@ -15,13 +20,10 @@ postProject = async (req, res) => {
       endDate: endDate,
       specialRequirements: specialRequirements,
       executiveSummary: executiveSummary,
-      customerName: customerName,
-      assets: assets
-      //pentestInfo:{findings: req.body.pentestInfo.findings}
-  
+      customerName: customerName
     });
-    if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
-    res.send(savedProject)
+    //if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
+    //res.send(savedProject)
 
 
 };
@@ -88,4 +90,4 @@ getAllProjects = async (req, res) => {
    
   };
 
-  module.exports = { postProject, updateProject, getProject, getAllProjects, deleteProject };
+  module.exports = { createProject, updateProject, getProject, getAllProjects, deleteProject };

@@ -5,13 +5,13 @@ const ProjectAdminAPI = require('../../controllers/admin/ProjectController');
 
 //Customers
 getAllCustomersRequest = router.get(`/admin/customers/all`, CustomerAdminAPI.getAllCustomers);
-postCustomerRequest = router.post(`/admin/customers/new`, CustomerAdminAPI.postCustomer);
+postCustomerRequest = router.post(`/admin/customers/new`, CustomerAdminAPI.createCustomer);
 
 
 //Projects
-getProjectRequest = router.get(`/admin/projects/:projectTitle/:projectAttribute?/:projectAttributeName?/:findings?`, ProjectAdminAPI.getProject);
+getProjectRequest = router.get(`/admin/projects/`, ProjectAdminAPI.getProject);
 getAllProjectsRequest = router.get(`/admin/projects/all`, ProjectAdminAPI.getAllProjects);
-postProjectRequest = router.post(`/admin/projects/new`, ProjectAdminAPI.postProject);
+createProjectRequest = router.post(`/admin/projects/:client/new`, ProjectAdminAPI.createProject);
 updateProjectRequest = router.patch(`/admin/projects/:projectTitle/:projectAttribute?`, ProjectAdminAPI.updateProject);
 
 

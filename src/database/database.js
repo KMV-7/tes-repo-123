@@ -50,80 +50,8 @@ const pentestModel = mongoose.model('PenTest', pentestSchema)
 
 
 //Assasment
-const assessmentSchema = new mongoose.Schema({
-    assessmentRisk: {
-        title: {type: String},
-        description: {type: String},
-        imapct: {type: String},
-        execProbability: {type: String},
-        severity: {type: String},
-        category: {type: String},
-        inherantRisk: {type: String},
-        residualRisk: {type: String},
-        appetite: [{type: String}],
-        threats: [{title: {type: String}, description: {type: String}
-        }],
-        control: {
-            title: {type: String},
-            description: {type: String},
-            score: {type: Number},
-            weight: {type: Number},
-            domain: {type: String},
-            mitigation: [mitigationSchema]
-        }
-    }
-    
-}, {strict : false});
-
-const assessmentModel = mongoose.model('Assessment', assessmentSchema)
 
 
-//Asset
-const assetSchema = new mongoose.Schema({   
-    name: {type: String},
-    type: {type: String},
-    relatedAssets: {type: Array},
-    tags: {type: Array},
-    projectTitle: {type: String}, ///FK
-    pentestInfo: pentestSchema,
-    assessmentInfo: assessmentSchema
-}, {strict : false});
-
-const assetModel = mongoose.model('Asset', assetSchema);
-
-
-//Customer
-const customerSchema = new mongoose.Schema({   
-    name: {type: String},
-    email: {type: String},
-    password: {type: String},
-    active: {type: Boolean},
-    role: {type: String},
-    size: {type: Number},
-    vertical: {type: String},
-    tags: [{type: Array}],
-}, {strict : false});
-
-const customerModel = mongoose.model('Customer', customerSchema);
-
-
-///Project
-const projectSchema = new mongoose.Schema({
-    title: {type: String},
-    leadConsultant: {type: String},
-    scope: {type: String},
-    startDate: {type: String},
-    endDate: {type: String},
-    specialRequirements: [{type: String}],
-    executiveSummary: {type: String},
-    customerName: {type: String}, ///FK
-    assets: [assetSchema],
-
-    //you can have both or neither or only one or none
-    
-}, {strict : false});
-
-const projectModel = mongoose.model('Project', projectSchema);
 
 //Admin
 const adminSchema = new mongoose.Schema({   

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {customerModel} = require('../admin/../../database/database')
+const customerModel = require('../admin/../../database/schemas/customer')
 //add check
 //add validationError
 
-postCustomer = async (req, res) => {
+createCustomer = async (req, res) => {
 
     //TODO:
     const newCustomer = new customerModel({
@@ -44,4 +44,4 @@ deleteCustomer = async (req, res) => {
     //TODO:  
   };
 
-  module.exports = { postCustomer, patchCustomer, getCustomer, getAllCustomers, deleteCustomer };
+  module.exports = { createCustomer, patchCustomer, getCustomer, getAllCustomers, deleteCustomer };
