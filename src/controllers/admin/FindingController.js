@@ -4,9 +4,9 @@ const findingModel = require('../admin/../../database/schemas/finding');
 //add check
 //add validationError
 
-createFinding = async (req, res) => {
+/*createFinding = async (req, res) => {
  
-    let { title, vulnDescription, findingDescription, imapct, execProbability, severity, category, screenshots, additionalComments, tags, mitigation} = req.body;
+    const { title, vulnDescription, findingDescription, imapct, execProbability, severity, category, screenshots, additionalComments, tags, mitigation} = req.body;
     const newFinding = new findingModel({
         title: title,
         vulnDescription: vulnDescription,
@@ -20,4 +20,6 @@ createFinding = async (req, res) => {
         tags: tags,
         mitigation: mitigation
     });
-};
+};*/
+
+module.exports = { createFinding }

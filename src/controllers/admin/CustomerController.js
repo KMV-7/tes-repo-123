@@ -10,7 +10,7 @@ createCustomer = async (req, res) => {
 
     //TODO:
     const newCustomer = new customerModel({
-      name: name.toLowerCase(), ///toLowerCase() will be in the express validation
+      name: name.toLowerCase().replace(/\s+/g, ""), ///шгся will be handled in the express validation
       email: email,
       password: password,
       active: active,
@@ -23,27 +23,5 @@ createCustomer = async (req, res) => {
     res.send(savedCustomer)
   };
 
-  patchCustomer = async (req, res) => {
-  
-    //TODO:
-  };
 
-  getCustomer = async (req, res) => {
-  
-    //TODO:   
-  };
-
-getAllCustomers = async (req, res) => {
-  
-    //TODO:
-    res.send({message: 'hello from get all customers API'})
-  
-    
-  };
-
-deleteCustomer = async (req, res) => {
-
-    //TODO:  
-  };
-
-  module.exports = { createCustomer, patchCustomer, getCustomer, getAllCustomers, deleteCustomer };
+  module.exports = { createCustomer };

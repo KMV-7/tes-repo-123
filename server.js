@@ -7,17 +7,11 @@ const connectionString = config.get('mongo.url');
 
 
 app.listen(port);
-console.log(`App listening on port ${port} in environment: ${process.env.NODE_ENV}`);
-
-/*mongoose.connect(connectionString,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },() => {
-    console.log(mongoose.connections[0])
-}, () => {
-    console.log(`There was an ERROR connecting to mongo`)
-});*/
+console.log(`App listening on port ${process.env.PORT} in environment: ${process.env.NODE_ENV}`);
 
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
-    console.log(mongoose.connections[0])
+    console.log(`Mongo connection established on host: ${mongoose.connections[0].host}, port: ${mongoose.connections[0].port} for db: ${mongoose.connections[0].name}`);
     },
     err => { 
         console.log('error: '+ err)

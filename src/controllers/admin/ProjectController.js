@@ -9,10 +9,10 @@ const customerModel = require('../admin/../../database/schemas/customer');
 createProject = async (req, res) => {
  
     const { title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary } = req.body;
-    let customerName = Object.values(req.params);
+    const customerName = Object.values(req.params);
     const customer = await customerModel.findOne({'name': customerName})
     const newProject = new projectModel({
-      title: title,
+      title: title.replace(/\s+/g, "").toLowerCase(), //this will be handled in express validation
       leadConsultant: leadConsultant,
       scope: scope,
       startDate: startDate,
@@ -22,72 +22,10 @@ createProject = async (req, res) => {
       customer: customer._id
     });
   
-    if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
+    savedProject = await newProject.save();
     res.send(savedProject)
 
 
 };
 
-updateProject = async (req, res) => {
-
-  const {projectTitle, projectAttribute} = req.params;
-
-  if (projectAttribute){
-    const projectQueryRes = await projectModel.findOne({title: projectTitle});
-    for (const i in projectQueryRes.assets){
-      if (projectQueryRes.assets[i].name === req.query.name && req.body.pentestInfo){
-        const fieldToUpdate = projectQueryRes.assets[i].pentestInfo.findings;
-        const findingsFromReq = req.body.pentestInfo.findings;
-        findingsFromReq.forEach(element => {
-          fieldToUpdate.push(element)
-        });
-        await projectModel.updateOne(projectQueryRes)
-        res.send(projectQueryRes)
-      }
-    }
-  }
-
-
-};
-
-
-deleteProject = async (req, res) => {
-
-    //TODO:
-   
-
-  };
-
-
-getProject = async (req, res) => {
-
-  const {projectTitle, projectAttribute} = req.params;
-  const projectQueryRes = await projectModel.findOne({title: projectTitle});
-  const findingsToShow = req.query.name;
-  if (!projectAttribute){
-   res.send(projectQueryRes);
-  }
-
-  if (findingsToShow === 'all'){
-    const returnAllFindings = projectQueryRes.assets.pentestInfo;
-    let findingsToReturn = [];
-    for (const i in projectQueryRes.assets){
-      const findingsFromDB = projectQueryRes.assets[i].pentestInfo.findings;
-      findingsFromDB.forEach(element => {
-        findingsToReturn.push(element)
-      });
-      
-    }
-    res.send(findingsToReturn)
-  }
-   
-};
-
-getAllProjects = async (req, res) => {
-
-    //TODO:
-    res.send({message: "Hello from get All projects API"})
-   
-  };
-
-  module.exports = { createProject, updateProject, getProject, getAllProjects, deleteProject };
+module.exports = { createProject };
