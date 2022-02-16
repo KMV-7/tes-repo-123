@@ -1,20 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const assetModel = require('../admin/../../database/schemas/asset');
+const projectModel = require('../admin/../../database/schemas/project');
 //add check
 //add validationError
 
 createAsset = async (req, res) => {
  
-    let { name, type, relatedAssets, tags } = req.body;
-    const newAsset = new assetModel({
-        name: name,
-        type: type,
-        relatedAssets: relatedAssets,
-        tags: tags,
-        projectTitle: projectTitle
+    const assets = req.body.assets;
+    const projectName = Object.values(req.params);
+    const project = await projectModel.findOne({'name': projectName})
+    await assets.forEach(element => {
+        const newAsset = new assetModel({
+            name: element.name,
+            type: element.type,
+            relatedAssets: element.relatedAssets,
+            tags: element.tags,
+            //project: project._id,
+        });
+        savedAsset =  newAsset.save();
     });
 
-    savedAssets = await newAsset.save();
-    res.send(savedCustomer)
+
+
+    res.send({message: `Assets successfully added to ${projectName}`})
+    
 };
+
+
+module.exports = { createAsset }

@@ -6,16 +6,18 @@ const customerModel = require('../admin/../../database/schemas/customer')
 
 createCustomer = async (req, res) => {
 
+  const { name, email, password, active, role, size, vertical, tags } = req.body;
+
     //TODO:
     const newCustomer = new customerModel({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      active: req.body.active,
-      role: req.body.role,
-      size: req.body.size,
-      vertical: req.body.vertical,
-      tags: [req.body.tags],
+      name: name.toLowerCase(), ///toLowerCase() will be in the express validation
+      email: email,
+      password: password,
+      active: active,
+      role: role,
+      size: size,
+      vertical: vertical,
+      tags: [tags],
     });
     savedCustomer = await newCustomer.save();
     res.send(savedCustomer)

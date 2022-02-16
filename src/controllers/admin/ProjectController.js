@@ -9,9 +9,8 @@ const customerModel = require('../admin/../../database/schemas/customer');
 createProject = async (req, res) => {
  
     const { title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary } = req.body;
-    let customerName = req.params;
-    customer = await customerModel.findOne({'name': 'bankofus'})
-    console.log(customer.name)
+    let customerName = Object.values(req.params);
+    const customer = await customerModel.findOne({'name': customerName})
     const newProject = new projectModel({
       title: title,
       leadConsultant: leadConsultant,
@@ -20,10 +19,11 @@ createProject = async (req, res) => {
       endDate: endDate,
       specialRequirements: specialRequirements,
       executiveSummary: executiveSummary,
-      customerName: customerName
+      customer: customer._id
     });
-    //if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
-    //res.send(savedProject)
+  
+    if (process.env.NODE_ENV === 'local'){savedProject = await newProject.save()};
+    res.send(savedProject)
 
 
 };
