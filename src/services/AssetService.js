@@ -1,17 +1,22 @@
 
-assetSaveAndFindingUpdate = async (findingAssetArray, findingId, projectId, assetModel, findingModel) => {
+assetSaveAndFindingUpdate = async (findingAssetArray, findingId, projectId, assetModel, findingModel, projectModel) => {
+
     for (const asset of findingAssetArray) {
-        const alreadyExistingAsset = assetModel.findOne({'name': asset});
-        if(typeof alreadyExistingAsset.name === 'undefined'){
+        let alreadyExistingAsset = await assetModel.findOne({'name': asset, projectIds: projectId});
+        console.log(alreadyExistingAsset)
+
+        if (!alreadyExistingAsset){
             const newAsset = new assetModel({
             name: asset,
             projectIds: projectId,
             });
-            const savedAsset =  await newAsset.save();
+
+            alreadyExistingAsset =  await newAsset.save();
+
+            const updatedFinding = await findingModel.updateOne({_id: findingId},{ $addToSet: { assetIds:  [alreadyExistingAsset._id] }});
+            const updatedAsset = await assetModel.updateOne({_id: alreadyExistingAsset._id},{ $addToSet: { findingIds:  [findingId] }});
+            const updateProject = projectModel.updateOne({_id: projectId},{ $addToSet:  { assetIds: [alreadyExistingAsset._id ]}});
             
-            const updatedFinding = await findingModel.updateOne({_id: findingId},{ $addToSet: { assetIds:  [savedAsset._id] }});
-            //const updatedAsset = await assetModel.updateOne({_id: findingId},{ $addToSet: { assetIds:  [savedAsset._id] }});
-            /*projectModel.updateOne({_id: projectId}, { assetIds: savedAsset._id }, { upsert: true });*/
         }
     }
 }
