@@ -12,7 +12,7 @@ const findingSchema = new mongoose.Schema({
     screenshots: {type: Array}, ///base64 encoded value or better s3 bucket link
     additionalComments: {type: Array},
     tags: {type: Array},
-    asset: [{ type: mongoose.Types.ObjectId, ref: 'Asset' }]
+    assetIds: [{ type: mongoose.Types.ObjectId, ref: 'Asset' }]
     
     
 }, {strict : false});

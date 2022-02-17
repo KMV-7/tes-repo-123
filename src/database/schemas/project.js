@@ -9,7 +9,7 @@ const projectSchema = new mongoose.Schema({
     specialRequirements: [{type: String}],
     executiveSummary: {type: String},
     customer: [{ type: mongoose.Types.ObjectId, ref: 'Customer' }],
-    asset: [{ type: mongoose.Types.ObjectId, ref: 'Asset' }]
+    assetIds: [{ type: mongoose.Types.ObjectId, ref: 'Asset' }]
   
     
 }, {strict : false});
