@@ -20,7 +20,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building Docker test image...
-      - docker build -t backend-app -f ./Dockerfile .
+      - docker build -t backend-app -f ./dockerfile .
       - echo  $IMAGE_REPO_NAME:$IMAGE_TAG 345672414283.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
       #- echo Build started on `date`
@@ -31,4 +31,4 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push 345672414283.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
