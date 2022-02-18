@@ -7,7 +7,7 @@ const connectionString = config.get('mongo.url');
 
 
 app.listen(port);
-console.log(`App listening on port ${process.env.PORT} in environment: ${process.env.NODE_ENV}`);
+console.log(`App listening on port ${port} in environment: ${process.env.NODE_ENV}`);
 
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {

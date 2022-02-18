@@ -5,18 +5,28 @@ phases:
       docker: 18
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - pip3 uninstall -y awscli
+      - cat /codebuild/output/tmp/script.sh
+      - echo docker info                           
+      - docker info
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip  
+      - sudo ./aws/install                         
+      - echo Logging in to Amazon ECR.... 
+      - aws --version
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 345672414283.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+    
   build:
     commands:
       - echo Build started on `date`
       - echo Building Docker test image...
-      - docker build -t $IMAGE_REPO_NAME:$TEST_IMAGE_TAG -f Dockerfile.dev .
-      - docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker build -t backend-app -f ./Dockerfile .
+      - echo  $IMAGE_REPO_NAME:$IMAGE_TAG 345672414283.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
+      #- echo Build started on `date`
+      #- echo Building the Docker image...
+      #- docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      #- docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
