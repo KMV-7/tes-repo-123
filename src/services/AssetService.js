@@ -3,7 +3,6 @@ assetSaveAndFindingUpdate = async (findingAssetArray, findingId, projectId, asse
 
     for (const asset of findingAssetArray) {
         let alreadyExistingAsset = await assetModel.findOne({'name': asset, projectIds: projectId});
-        console.log(alreadyExistingAsset)
 
         if (!alreadyExistingAsset){
             const newAsset = new assetModel({
