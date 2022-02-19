@@ -1,0 +1,6 @@
+url:
+  host: 'http://localhost'
+  port: 8000
+
+mongo:
+  url: mongodb+srv://kirilsimeonov:toor@cluster0.eqipq.mongodb.net/vulnerability-management-system-db?retryWrites=true&w=majority

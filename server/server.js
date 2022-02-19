@@ -1,5 +1,5 @@
 const config = require('config')
-const app = require('./src/app');
+const app = require('../src/app');
 const port = config.get('url.port');
 const mongoose = require('mongoose');
 const connectionString = config.get('mongo.url');
