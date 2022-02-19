@@ -20,8 +20,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building Docker test image...
-      - docker build -t backend-app -f ./dockerfile .
-      - echo  holisticyber-vulnerability-management-system:backend-latest 345672414283.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - docker build -t 345672414283.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/holisticyber-vulnerability-management-system:backend-test -f ./Dockerfile .
       #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
       #- echo Build started on `date`
       #- echo Building the Docker image...
@@ -31,4 +30,4 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 345672414283.ecr.$AWS_DEFAULT_REGION.amazonaws.com/holisticyber-vulnerability-management-system:backend-latest
+      - docker push 345672414283.ecr.$AWS_DEFAULT_REGION.amazonaws.com/holisticyber-vulnerability-management-system:backend-test
