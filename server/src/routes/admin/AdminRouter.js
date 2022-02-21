@@ -13,6 +13,8 @@ createCustomerRequest = router.post(`/admin/customers/new`, CustomerAdminAPI.cre
 
 //Projects
 createProjectRequest = router.post(`/admin/projects/:client/new`, ProjectAdminAPI.createProject);
+getAllProjectsRequest = router.get(`/admin/projects/:client/all`, ProjectAdminAPI.getAllProjectsForCustomer);
+
 
 //Pentest
 createProjectRequest = router.post(`/admin/:projectname/pentest/new`,  
