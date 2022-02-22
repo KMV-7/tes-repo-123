@@ -9,6 +9,7 @@ const FindingService = require('../../services/FindingService');
 
 //Customers
 createCustomerRequest = router.post(`/admin/customers/new`, CustomerAdminAPI.createCustomer);
+getAllCustomers = router.get(`/admin/customers/all`, CustomerAdminAPI.getAllCustomers);
 
 
 //Projects
@@ -17,11 +18,12 @@ getAllProjectsRequest = router.get(`/admin/projects/:client/all`, ProjectAdminAP
 
 
 //Pentest
-createProjectRequest = router.post(`/admin/:projectname/pentest/new`,  
-check('findings')
-.custom(),
+createProjectRequest = router.post(`/admin/pentest/:projectname/new`,
 PentestAdminAPI.createPentest
 )
+getAllPentestsForCustomer = router.get(`/admin/pentest/:projectname/all`,
+PentestAdminAPI.getAllPentestsForCustomer
+);
 
 //Asset
 createAssettRequest = router.post(`/admin/assets/:projectname/new`, AssetAdminAPI.createAsset);

@@ -10,7 +10,7 @@ createCustomer = async (req, res) => {
 
     //TODO:
     const newCustomer = new customerModel({
-      name: name.toLowerCase().replace(/\s+/g, ""), ///шгся will be handled in the express validation
+      name: name,
       email: email,
       password: password,
       active: active,
@@ -24,4 +24,10 @@ createCustomer = async (req, res) => {
   };
 
 
-  module.exports = { createCustomer };
+  getAllCustomers = async (req, res) => {
+    allCustomers = await customerModel.find()
+    res.json(allCustomers)
+ };
+
+
+  module.exports = { createCustomer, getAllCustomers };

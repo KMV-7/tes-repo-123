@@ -22,4 +22,19 @@ const findingModel = require('../admin/../../database/schemas/finding');
     });
 };*/
 
+const finding = req.body;
+const pentestFromReq = req.body.pentest;
+const alreadyExistingPentest = await projectModel.findOne({'title': pentestFromReq})
+const pentestId = alreadyExistingPentest._id;
+
+let assetsArray = findings.assets;
+let alreadyExistingFinding = await findingModel.findOne({title: finding.title, pentestIds: pentestId});
+if (!alreadyExistingFinding){
+    alreadyExistingFinding = FindingService.insertNewFinding(finding, findingModel, pentestId)
+}else{
+    findingAlreadyExistsErr = {message: `Finding ${alreadyExistingFinding.title} already exists for pentest ${alreadyExistingPentest.title}!`};
+    res.send(findingAlreadyExistsErr)
+}
+
+AssetService.assetSaveAndFindingUpdate(assetsArray,alreadyExistingFinding._id,projectId, assetModel, findingModel, projectModel);
 module.exports = { createFinding }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 
-import CreatePentest1 from './components/CreatePentest1';
+import CreateFinding from './components/CreateFinding';
 
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
       <Router>
         <div>
           <Routes>
-            <Route path='/admin/:prjectname/pentest/new' element={<CreatePentest1 />} />
+            <Route path='/admin/pentest/new' element={<CreateFinding />} />
           </Routes>
         </div>
       </Router>

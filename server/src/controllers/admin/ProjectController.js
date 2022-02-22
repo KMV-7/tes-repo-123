@@ -30,13 +30,12 @@ createProject = async (req, res) => {
 
 getAllProjectsForCustomer = async (req, res) => {
  
-  const { title,leadConsultant,scope,startDate,endDate,specialRequirements,executiveSummary } = req.body;
   const customerName = Object.values(req.params);
   const customer = await customerModel.findOne({'name': customerName})
   const existingProject = await projectModel.find({'customer': customer._id})
 
-  res.send(existingProject)
-
+  res.json(existingProject)
+  
 
 };
 
